@@ -73,6 +73,9 @@ public static class DependencyInjection
         // Doctor Service
         services.AddScoped<IDoctorService, DoctorService>();
 
+        // Appointment Service
+        services.AddScoped<IAppointmentService, AppointmentService>();
+
         return services;
     }
 }

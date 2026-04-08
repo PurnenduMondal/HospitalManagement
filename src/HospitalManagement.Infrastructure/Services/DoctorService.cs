@@ -22,7 +22,7 @@ public class DoctorService : IDoctorService
         return BaseResponse<IEnumerable<DoctorDto>>.Ok(result);
     }
 
-    public async Task<BaseResponse<DoctorDto>> GetByIdAsync(int id)
+    public async Task<BaseResponse<DoctorDto>> GetByIdAsync(Guid id)
     {
         var doctor = await _unitOfWork.Repository<Doctor>().GetByIdAsync(id);
         if (doctor == null || doctor.IsDeleted)
@@ -33,13 +33,11 @@ public class DoctorService : IDoctorService
 
     public async Task<BaseResponse<DoctorDto>> CreateAsync(CreateDoctorDto dto)
     {
-        // Check duplicate email
         var emailExists = await _unitOfWork.Repository<Doctor>()
             .ExistsAsync(d => d.Email == dto.Email && !d.IsDeleted);
         if (emailExists)
             return BaseResponse<DoctorDto>.Fail("A doctor with this email already exists.");
 
-        // Check duplicate license
         var licenseExists = await _unitOfWork.Repository<Doctor>()
             .ExistsAsync(d => d.LicenseNumber == dto.LicenseNumber && !d.IsDeleted);
         if (licenseExists)
@@ -67,7 +65,7 @@ public class DoctorService : IDoctorService
         return BaseResponse<DoctorDto>.Ok(MapToDto(doctor), "Doctor created successfully.");
     }
 
-    public async Task<BaseResponse<DoctorDto>> UpdateAsync(int id, UpdateDoctorDto dto)
+    public async Task<BaseResponse<DoctorDto>> UpdateAsync(Guid id, UpdateDoctorDto dto)
     {
         var doctor = await _unitOfWork.Repository<Doctor>().GetByIdAsync(id);
         if (doctor == null || doctor.IsDeleted)
@@ -93,13 +91,12 @@ public class DoctorService : IDoctorService
         return BaseResponse<DoctorDto>.Ok(MapToDto(doctor), "Doctor updated successfully.");
     }
 
-    public async Task<BaseResponse<bool>> DeleteAsync(int id)
+    public async Task<BaseResponse<bool>> DeleteAsync(Guid id)
     {
         var doctor = await _unitOfWork.Repository<Doctor>().GetByIdAsync(id);
         if (doctor == null || doctor.IsDeleted)
             return BaseResponse<bool>.Fail("Doctor not found.");
 
-        // Soft delete
         doctor.IsDeleted = true;
         doctor.UpdatedAt = DateTime.UtcNow;
 

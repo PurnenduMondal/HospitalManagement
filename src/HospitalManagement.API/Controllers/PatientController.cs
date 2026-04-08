@@ -25,8 +25,8 @@ public class PatientController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _patientService.GetByIdAsync(id);
         return result.Success ? Ok(result) : NotFound(result);
@@ -43,8 +43,7 @@ public class PatientController : ControllerBase
     [Authorize(Roles = "Admin,Doctor,Nurse")]
     public async Task<IActionResult> Create([FromBody] CreatePatientDto dto)
     {
-        // Validate
-        var validator = new CreatePatientValidator();
+        var validator  = new CreatePatientValidator();
         var validation = await validator.ValidateAsync(dto);
         if (!validation.IsValid)
             return BadRequest(validation.Errors.Select(e => e.ErrorMessage));
@@ -53,17 +52,17 @@ public class PatientController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin,Doctor,Nurse")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdatePatientDto dto)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePatientDto dto)
     {
         var result = await _patientService.UpdateAsync(id, dto);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _patientService.DeleteAsync(id);
         return result.Success ? Ok(result) : BadRequest(result);

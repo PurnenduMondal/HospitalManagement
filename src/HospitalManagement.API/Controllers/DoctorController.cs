@@ -25,8 +25,8 @@ public class DoctorController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _doctorService.GetByIdAsync(id);
         return result.Success ? Ok(result) : NotFound(result);
@@ -59,17 +59,17 @@ public class DoctorController : ControllerBase
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdateDoctorDto dto)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateDoctorDto dto)
     {
         var result = await _doctorService.UpdateAsync(id, dto);
         return result.Success ? Ok(result) : BadRequest(result);
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _doctorService.DeleteAsync(id);
         return result.Success ? Ok(result) : BadRequest(result);

@@ -22,7 +22,7 @@ public class PatientService : IPatientService
         return BaseResponse<IEnumerable<PatientDto>>.Ok(result);
     }
 
-    public async Task<BaseResponse<PatientDto>> GetByIdAsync(int id)
+    public async Task<BaseResponse<PatientDto>> GetByIdAsync(Guid id)
     {
         var patient = await _unitOfWork.Repository<Patient>().GetByIdAsync(id);
         if (patient == null || patient.IsDeleted)
@@ -33,7 +33,6 @@ public class PatientService : IPatientService
 
     public async Task<BaseResponse<PatientDto>> CreateAsync(CreatePatientDto dto)
     {
-        // Check duplicate email
         var exists = await _unitOfWork.Repository<Patient>()
             .ExistsAsync(p => p.Email == dto.Email && !p.IsDeleted);
         if (exists)
@@ -41,16 +40,16 @@ public class PatientService : IPatientService
 
         var patient = new Patient
         {
-            FirstName            = dto.FirstName,
-            LastName             = dto.LastName,
-            Email                = dto.Email,
-            Phone                = dto.Phone,
-            DateOfBirth          = dto.DateOfBirth,
-            Gender               = dto.Gender,
-            Address              = dto.Address,
-            BloodGroup           = dto.BloodGroup,
-            EmergencyContactName = dto.EmergencyContactName,
-            EmergencyContactPhone= dto.EmergencyContactPhone
+            FirstName             = dto.FirstName,
+            LastName              = dto.LastName,
+            Email                 = dto.Email,
+            Phone                 = dto.Phone,
+            DateOfBirth           = dto.DateOfBirth,
+            Gender                = dto.Gender,
+            Address               = dto.Address,
+            BloodGroup            = dto.BloodGroup,
+            EmergencyContactName  = dto.EmergencyContactName,
+            EmergencyContactPhone = dto.EmergencyContactPhone
         };
 
         await _unitOfWork.Repository<Patient>().AddAsync(patient);
@@ -59,7 +58,7 @@ public class PatientService : IPatientService
         return BaseResponse<PatientDto>.Ok(MapToDto(patient), "Patient created successfully.");
     }
 
-    public async Task<BaseResponse<PatientDto>> UpdateAsync(int id, UpdatePatientDto dto)
+    public async Task<BaseResponse<PatientDto>> UpdateAsync(Guid id, UpdatePatientDto dto)
     {
         var patient = await _unitOfWork.Repository<Patient>().GetByIdAsync(id);
         if (patient == null || patient.IsDeleted)
@@ -82,13 +81,12 @@ public class PatientService : IPatientService
         return BaseResponse<PatientDto>.Ok(MapToDto(patient), "Patient updated successfully.");
     }
 
-    public async Task<BaseResponse<bool>> DeleteAsync(int id)
+    public async Task<BaseResponse<bool>> DeleteAsync(Guid id)
     {
         var patient = await _unitOfWork.Repository<Patient>().GetByIdAsync(id);
         if (patient == null || patient.IsDeleted)
             return BaseResponse<bool>.Fail("Patient not found.");
 
-        // Soft delete
         patient.IsDeleted = true;
         patient.UpdatedAt = DateTime.UtcNow;
 
@@ -100,12 +98,12 @@ public class PatientService : IPatientService
 
     public async Task<BaseResponse<IEnumerable<PatientDto>>> SearchAsync(string keyword)
     {
-        var keyword_lower = keyword.ToLower();
+        var kw = keyword.ToLower();
         var patients = await _unitOfWork.Repository<Patient>()
             .FindAsync(p => !p.IsDeleted && (
-                p.FirstName.ToLower().Contains(keyword_lower) ||
-                p.LastName.ToLower().Contains(keyword_lower)  ||
-                p.Email.ToLower().Contains(keyword_lower)     ||
+                p.FirstName.ToLower().Contains(kw) ||
+                p.LastName.ToLower().Contains(kw)  ||
+                p.Email.ToLower().Contains(kw)     ||
                 p.Phone.Contains(keyword)));
 
         return BaseResponse<IEnumerable<PatientDto>>.Ok(patients.Select(MapToDto));
@@ -113,18 +111,18 @@ public class PatientService : IPatientService
 
     private static PatientDto MapToDto(Patient p) => new()
     {
-        Id                   = p.Id,
-        FirstName            = p.FirstName,
-        LastName             = p.LastName,
-        FullName             = p.FullName,
-        Email                = p.Email,
-        Phone                = p.Phone,
-        DateOfBirth          = p.DateOfBirth,
-        Gender               = p.Gender,
-        Address              = p.Address,
-        BloodGroup           = p.BloodGroup,
-        EmergencyContactName = p.EmergencyContactName,
-        EmergencyContactPhone= p.EmergencyContactPhone,
-        CreatedAt            = p.CreatedAt
+        Id                    = p.Id,
+        FirstName             = p.FirstName,
+        LastName              = p.LastName,
+        FullName              = p.FullName,
+        Email                 = p.Email,
+        Phone                 = p.Phone,
+        DateOfBirth           = p.DateOfBirth,
+        Gender                = p.Gender,
+        Address               = p.Address,
+        BloodGroup            = p.BloodGroup,
+        EmergencyContactName  = p.EmergencyContactName,
+        EmergencyContactPhone = p.EmergencyContactPhone,
+        CreatedAt             = p.CreatedAt
     };
 }
