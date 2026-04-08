@@ -3,6 +3,7 @@ using HospitalManagement.Application.Interfaces;
 using HospitalManagement.Domain.Interfaces;
 using HospitalManagement.Infrastructure.Auth;
 using HospitalManagement.Infrastructure.Data;
+using HospitalManagement.Infrastructure.Services;
 using HospitalManagement.Infrastructure.Identity;
 using HospitalManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +66,9 @@ public static class DependencyInjection
         // Auth Services
         services.AddScoped<JwtTokenService>();
         services.AddScoped<IAuthService, AuthService>();
+
+        // Patient Service
+        services.AddScoped<IPatientService, PatientService>();
 
         return services;
     }
