@@ -70,6 +70,9 @@ public static class DependencyInjection
         // Patient Service
         services.AddScoped<IPatientService, PatientService>();
 
+        // Doctor Service
+        services.AddScoped<IDoctorService, DoctorService>();
+
         return services;
     }
 }
