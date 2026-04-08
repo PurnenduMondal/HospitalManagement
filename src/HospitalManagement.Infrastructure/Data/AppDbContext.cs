@@ -13,8 +13,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        // Rename default Identity tables (optional but cleaner)
-        builder.Entity<AppUser>().ToTable("Users");
     }
 }
