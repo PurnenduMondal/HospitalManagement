@@ -11,9 +11,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
     }
 
-    public DbSet<Patient>     Patients     => Set<Patient>();
-    public DbSet<Doctor>      Doctors      => Set<Doctor>();
-    public DbSet<Appointment> Appointments => Set<Appointment>();
+    public DbSet<Patient>       Patients       => Set<Patient>();
+    public DbSet<Doctor>        Doctors        => Set<Doctor>();
+    public DbSet<Appointment>   Appointments   => Set<Appointment>();
+    public DbSet<MedicalRecord> MedicalRecords => Set<MedicalRecord>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -31,6 +32,28 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasOne(a => a.Doctor)
             .WithMany()
             .HasForeignKey(a => a.DoctorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // MedicalRecord → Patient (no cascade delete)
+        builder.Entity<MedicalRecord>()
+            .HasOne(r => r.Patient)
+            .WithMany()
+            .HasForeignKey(r => r.PatientId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // MedicalRecord → Doctor (no cascade delete)
+        builder.Entity<MedicalRecord>()
+            .HasOne(r => r.Doctor)
+            .WithMany()
+            .HasForeignKey(r => r.DoctorId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // MedicalRecord → Appointment (optional, no cascade delete)
+        builder.Entity<MedicalRecord>()
+            .HasOne(r => r.Appointment)
+            .WithMany()
+            .HasForeignKey(r => r.AppointmentId)
+            .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

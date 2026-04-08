@@ -76,6 +76,9 @@ public static class DependencyInjection
         // Appointment Service
         services.AddScoped<IAppointmentService, AppointmentService>();
 
+        // Medical Record Service
+        services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+
         return services;
     }
 }
