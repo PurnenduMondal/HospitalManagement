@@ -1,5 +1,7 @@
+using HospitalManagement.Domain.Interfaces;
 using HospitalManagement.Infrastructure.Data;
 using HospitalManagement.Infrastructure.Identity;
+using HospitalManagement.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +30,9 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
+
+        // Register UnitOfWork
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

@@ -10,11 +10,11 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
     }
 
-    // Add DbSets here as you create entities
-    // public DbSet<Patient> Patients => Set<Patient>();
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        // Rename default Identity tables (optional but cleaner)
+        builder.Entity<AppUser>().ToTable("Users");
     }
 }
