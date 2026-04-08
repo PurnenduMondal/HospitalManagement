@@ -1,0 +1,116 @@
+# ============================================================
+# .NET / ASP.NET Core
+# ============================================================
+
+## Build output
+bin/
+obj/
+out/
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+## Visual Studio
+.vs/
+*.vspscc
+*.vssscc
+.vscode/settings.json
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## Test results
+TestResults/
+[Tt]est[Rr]esult*/
+coverage*/
+*.coveragexml
+*.trx
+
+## Entity Framework migrations (keep the files, ignore temp)
+## Uncomment below if you want to ignore migration snapshots:
+# **/Migrations/*.Designer.cs
+
+## App settings with secrets — keep templates, ignore overrides
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Production.json
+secrets.json
+
+## Publish output
+publish/
+**/publish/
+
+## Docker
+.dockerignore
+
+# ============================================================
+# Node / React / Vite (frontend/)
+# ============================================================
+
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+## Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+## Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+## Vite cache
+.vite/
+
+## ESLint cache
+.eslintcache
+
+# ============================================================
+# OS
+# ============================================================
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+## Linux
+*~
+
+# ============================================================
+# Misc
+# ============================================================
+
+*.bak
+*.tmp
+*.swp
+*.orig
